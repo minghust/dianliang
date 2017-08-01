@@ -1,0 +1,97 @@
+<!--
+> filename: index.ejs
+> Author: Ming Zhang
+> Date: 2017-7-28
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>奕菁宝宝查电量</title>
+        <script src="/javascripts/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="/stylesheets/style.css">
+
+    </head>
+    <body>
+
+    <div id="selection">
+        <select id="area" name="name_area" onchange="change()">
+           请选择片区: <option value="noarea" selected="selected">先选择片区</option>
+           <option value="yy1" name="yy1qi">韵苑一期</option>
+           <option value="yy2" name="yy2qi">韵苑二期</option>
+        </select>
+        <br><br>
+
+        <select id="building" name="name_buidling">
+           请选择楼栋: <option value="nobuilding" selected="selected">后选择楼栋</option>
+        </select>
+        <br><br>
+
+        <input type="text" id="dorm"> <br><br>
+
+        <input type="button" id="sub" value="提交">
+        <input type="reset" onclick="window.location.reload()" value="刷新">
+        <br>
+        <br>
+        <div id="add">
+
+        </div>
+        <br><br><br>
+        <img src="/images/deng.jpeg" alt="dengpa" height="200" width="180">
+        <p>实际上是等爬(滑稽</p><br><br>
+		<p>源码在我github上，repo名字叫dianliang</p>
+    </div>
+
+    <script type="text/javascript">
+        window.array = new Array();
+        function change()
+        {
+            var x = document.getElementById("area");
+            var y = document.getElementById("building");
+
+            y.options.length = 0;
+
+            if(x.selectedIndex == 0)
+            {
+                y.options.add(new Option("请选择楼栋", "0"));
+            }
+            else if(x.selectedIndex == 1)
+            {
+                 y.options.add(new Option("请选择楼栋", "0"));
+                 y.options.add(new Option("yy1栋", "1"));
+                 y.options.add(new Option("yy2栋", "2"));
+            }
+            else if(x.selectedIndex == 2)
+            {
+                 y.options.add(new Option("请选择楼栋", "0"));
+                 y.options.add(new Option("yy3栋", "3"));
+                 y.options.add(new Option("yy4栋", "4"));
+            }
+        }
+
+        // AJAX
+        $(function(){
+            $("#sub").click(function(){
+                array[0] = document.getElementById("area").value;
+                array[1] = document.getElementById("building").value;
+                array[2] = document.getElementById("dorm").value;
+
+                $.ajax({
+                    url: "/submit",
+                    dataType: "json",
+                    type: "POST",
+                    data: {"data": array}, // important
+                    success: function(data){
+                        $("#add").append(function(){
+                            $("#add").empty();
+                            return "<b>电量为：" + data + "</b>";
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <br><br>
+    </body>
+</html>
